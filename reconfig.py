@@ -71,6 +71,10 @@ def patch_main_c(main_c: Path) -> bool:
     # Ensure app_main declaration exists
     # ------------------------------------------------
 
+    # ------------------------------------------------
+    # Ensure app_main declaration exists
+    # ------------------------------------------------
+
     if "void app_main(void);" not in src:
 
         extern_block = (
@@ -83,17 +87,21 @@ def patch_main_c(main_c: Path) -> bool:
             "#endif\n"
         )
 
-        pattern = r'#include\s+"main\.h"'
+        pattern = r"/\*\s*USER CODE BEGIN Includes\s*\*/"
 
-        if re.search(pattern, src):
+        match = re.search(pattern, src)
 
-            src = re.sub(pattern, '#include "main.h"' + extern_block, src, count=1)
+        if match:
 
-            print("[OK] app_main declaration inserted")
+            insert_pos = match.end()
+
+            src = src[:insert_pos] + extern_block + src[insert_pos:]
+
+            print("[OK] app_main declaration inserted in USER CODE block")
             changed = True
 
         else:
-            print('[WARN] Could not locate #include "main.h"')
+            print("[WARN] Could not locate USER CODE BEGIN Includes")
 
     else:
         print("[OK] app_main already declared")

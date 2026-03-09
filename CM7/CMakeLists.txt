@@ -54,12 +54,16 @@ enable_language(C CXX ASM)
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/App
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Current_sensor
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Encoder
     # Add user defined include paths
 )
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/App/app.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Encoder/Encoder.cpp
     # Add user sources here
 )
 
