@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Flash CM7",
+      "type": "shell",
+      "command": "STM32_Programmer_CLI.exe",
+      "args": [
+        "-c",
+        "port=SWD",
+        "-w",
+        "${workspaceFolder}/CM7/build/Full_IDEN_CM7.elf",
+        "-rst"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build CM7",
+      "type": "shell",
+      "command": "echo Building...",
+      "dependsOn": "CMake: build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build + Flash CM7",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Build CM7",
+        "Flash CM7"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "stlinkgdbtarget",
+      "request": "launch",
+      "name": "STM32 CM7 Debug",
+      "cwd": "${workspaceFolder}",
+      "deviceCore": "Cortex-M7",
+      "runEntry": "main",
+      "imagesAndSymbols": [
+        {
+          "imageFileName": "${workspaceFolder}/CM7/build/Full_IDEN_CM7.elf"
+        }
+      ]
+    }
+  ]
+}
