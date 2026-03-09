@@ -70,7 +70,7 @@ TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
-uint16_t adc_buffer[1];
+// uint16_t adc_buffer[1];
 
 volatile uint32_t k2 = 0; // ADC interrupt
 volatile uint32_t k3 = 0; // Timer interrupt
@@ -196,13 +196,8 @@ int main(void)
   BSP_LED_On(LED_YELLOW);
   BSP_LED_On(LED_RED);
 
-  HAL_ADCEx_Calibration_Start(&hadc2, ADC_CALIB_OFFSET, ADC_SINGLE_ENDED);
-
-  HAL_ADC_Start_DMA(&hadc2, (uint32_t *)adc_buffer, 1);
-
-  HAL_TIM_Base_Start_IT(&htim1);
-
   app_main();
+  // *! -------------------------- APP MAIN -------------------------- !* //
   /* USER CODE END BSP */
 
   /* Infinite loop */
@@ -516,20 +511,24 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+static inline void toggle_led_periodic(Led_TypeDef led, uint32_t *counter)
+{
+  (*counter)++;
+
+  if (*counter >= 10000)
+  {
+    BSP_LED_Toggle(led);
+    *counter = 0;
+  }
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == TIM1)
   {
     static uint32_t counter = 0;
-
-    k3++;
-    counter++;
-
-    if (counter >= 10000) // 50us to 500ms depending on the timer configuration
-    {
-      BSP_LED_Toggle(LED_GREEN);
-      counter = 0;
-    }
+    toggle_led_periodic(LED_GREEN, &counter);
   }
 }
 
@@ -538,15 +537,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
   if (hadc->Instance == ADC2)
   {
     static uint32_t counter = 0;
-
-    k2++;
-    counter++;
-
-    if (counter >= 10000)
-    {
-      BSP_LED_Toggle(LED_RED);
-      counter = 0;
-    }
+    toggle_led_periodic(LED_RED, &counter);
   }
 }
 

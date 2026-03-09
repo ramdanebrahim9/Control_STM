@@ -1,24 +1,31 @@
 #pragma once
 #include <stdint.h>
 
+extern "C"
+{
+#include "main.h"
+}
+
+extern volatile uint16_t adc_buffer[1];
+
 class CurrentSensor
 {
 public:
-    CurrentSensor(volatile uint16_t *adc_buffer);
+    CurrentSensor();
 
     float readVoltage() const;
     float readCurrent() const;
 
+    HAL_StatusTypeDef start();
     void calibrate();
 
 private:
-    volatile uint16_t *adc_;
+    static inline volatile uint16_t *const adc_ = adc_buffer;
 
     float offset_v_ = 0.0f;
 
     static constexpr float VREF = 3.3f;
     static constexpr float ADC_MAX = 65535.0f;
 
-    // For a 20A/V sensor with a 0.01Ω shunt resistor
-    static constexpr float CURRENT_GAIN = 0.2f; // 0.01Ω * 20
+    static constexpr float CURRENT_GAIN = 0.2f;
 };

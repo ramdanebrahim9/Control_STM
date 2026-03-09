@@ -4,12 +4,46 @@
 extern "C"
 {
 #include "main.h"
+
+    extern ADC_HandleTypeDef hadc2;
+    extern TIM_HandleTypeDef htim1;
 }
 
-CurrentSensor::CurrentSensor(volatile uint16_t *adc_buffer)
-    : adc_(adc_buffer)
+volatile uint16_t adc_buffer[1];
+
+HAL_StatusTypeDef CurrentSensor::start()
 {
+    HAL_StatusTypeDef status;
+
+    printf("CurrentSensor init...\r\n");
+
+    status = HAL_ADCEx_Calibration_Start(&hadc2, ADC_CALIB_OFFSET, ADC_SINGLE_ENDED);
+    if (status != HAL_OK)
+    {
+        printf("ADC calibration failed\r\n");
+        return status;
+    }
+
+    status = HAL_ADC_Start_DMA(&hadc2, (uint32_t *)adc_buffer, 1);
+    if (status != HAL_OK)
+    {
+        printf("ADC DMA start failed\r\n");
+        return status;
+    }
+
+    status = HAL_TIM_Base_Start_IT(&htim1);
+    if (status != HAL_OK)
+    {
+        printf("Timer start failed\r\n");
+        return status;
+    }
+
+    calibrate();
+
+    return HAL_OK;
 }
+
+CurrentSensor::CurrentSensor() {}
 
 float CurrentSensor::readVoltage() const
 {
