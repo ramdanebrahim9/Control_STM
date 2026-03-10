@@ -57,6 +57,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Current_sensor
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Encoder
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Actuator
     # Add user defined include paths
 )
 
@@ -65,6 +66,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/App/app.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Encoder/Encoder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Current_sensor/current.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/libs/Actuator/pwm_engine.cpp
     # Add user sources here
 )
 
