@@ -67,38 +67,6 @@ extern "C" void app_main(void)
     }
     printf("Current sensor ready\n");
     P_Line;
-
-    /*
-    while (1)
-    {
-        float v = current.readVoltage();
-        float i = current.readCurrent();
-
-        printf("V = %.3f V   I = %.3f A\r\n", v, i);
-        // ----------------------------------- //
-
-        int32_t pos = enc1.getCount();
-
-        printf("pos: %ld\n", pos);
-
-        // HAL_Delay(50);
-
-        PWMEngine::set_duty(2.0f); // command 2.0V
-        HAL_Delay(dl);
-
-        PWMEngine::set_duty(-4.0f); // command -4.0V
-        HAL_Delay(dl);
-
-        PWMEngine::set_duty(6.0f); // command 6.0V
-        HAL_Delay(dl);
-
-        PWMEngine::set_duty(-8.0f); // command -8.0V
-        HAL_Delay(dl);
-
-        PWMEngine::set_duty(11.0f); // command 11.0V
-        HAL_Delay(dl);
-    }
-        */
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
