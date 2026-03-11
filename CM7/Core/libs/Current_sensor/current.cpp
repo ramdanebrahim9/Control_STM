@@ -1,12 +1,11 @@
 #include "current.hpp"
+#include "Macros.hpp"
+
 #include <cstdio>
 
 extern "C"
 {
 #include "main.h"
-
-    extern ADC_HandleTypeDef hadc2;
-    extern TIM_HandleTypeDef htim1;
 }
 
 volatile uint16_t adc_buffer[1];
@@ -28,13 +27,6 @@ HAL_StatusTypeDef CurrentSensor::start()
     if (status != HAL_OK)
     {
         printf("ADC DMA start failed\r\n");
-        return status;
-    }
-
-    status = HAL_TIM_Base_Start_IT(&htim1);
-    if (status != HAL_OK)
-    {
-        printf("Timer start failed\r\n");
         return status;
     }
 
