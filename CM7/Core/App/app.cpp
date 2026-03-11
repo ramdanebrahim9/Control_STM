@@ -9,14 +9,9 @@ extern "C"
 #include "pwm_engine.hpp"
 #include "buffer_handler.hpp"
 #include "control.hpp"
+#include "sdio_sd.hpp"
 #include "Macros.hpp"
 #include <stdio.h>
-
-#define INF_LOOP        \
-    while (1)           \
-    {                   \
-        HAL_Delay(500); \
-    }
 
 Encoder enc1;
 CurrentSensor current;
@@ -31,6 +26,7 @@ extern "C" void app_main(void)
         Ts,
         TOTAL_SAMPLES,
         TOGGLE_SAMPLES);
+    P_Line;
 
     if (HAL_TIM_Base_Start_IT(&htim1) != HAL_OK)
     {
@@ -38,6 +34,15 @@ extern "C" void app_main(void)
         INF_LOOP;
     }
     printf("MAIN : Timer1 started successfully\n");
+    P_Line;
+
+    if (Sdio_SD::init() != FR_OK)
+    {
+        printf("SD card init Problem\n");
+        INF_LOOP;
+    }
+    printf("SD card initialized successfully\n");
+    P_Line;
 
     if (PWMEngine::start() != HAL_OK)
     {
@@ -45,6 +50,7 @@ extern "C" void app_main(void)
         INF_LOOP;
     }
     printf("PWM started successfully\n");
+    P_Line;
 
     if (enc1.start() != HAL_OK)
     {
@@ -52,6 +58,7 @@ extern "C" void app_main(void)
         INF_LOOP;
     }
     printf("Encoder started successfully\n");
+    P_Line;
 
     if (current.start() != HAL_OK)
     {
@@ -59,7 +66,9 @@ extern "C" void app_main(void)
         INF_LOOP;
     }
     printf("Current sensor ready\n");
+    P_Line;
 
+    /*
     while (1)
     {
         float v = current.readVoltage();
@@ -89,6 +98,7 @@ extern "C" void app_main(void)
         PWMEngine::set_duty(11.0f); // command 11.0V
         HAL_Delay(dl);
     }
+        */
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)

@@ -5,6 +5,14 @@
 
 // #define STOP_EXP_OnTime // Comment this line to STOP the experiment on TIMER done
 
+#define INF_LOOP        \
+    while (1)           \
+    {                   \
+        HAL_Delay(500); \
+    }
+
+#define P_Line printf("-----------------------------------------------\n")
+
 extern ADC_HandleTypeDef hadc2;
 extern TIM_HandleTypeDef htim1;
 
