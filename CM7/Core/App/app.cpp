@@ -7,8 +7,10 @@ extern "C"
 #include "Encoder.hpp"
 #include "current.hpp"
 #include "pwm_engine.hpp"
-#include <stdio.h>
+#include "buffer_handler.hpp"
+#include "control.hpp"
 #include "Macros.hpp"
+#include <stdio.h>
 
 #define INF_LOOP        \
     while (1)           \
@@ -56,7 +58,7 @@ extern "C" void app_main(void)
         printf("Current sensor start failed\n");
         INF_LOOP;
     }
-    printf("Current sensor started successfully\n");
+    printf("Current sensor ready\n");
 
     while (1)
     {
@@ -98,7 +100,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     volatile static uint32_t sample_counter = 0;
     sample_counter++;
 
-    // control_loop_step();
+    control_loop_step();
 
 #ifdef STOP_EXP_OnTime
     if (sample_counter >= TOTAL_SAMPLES)

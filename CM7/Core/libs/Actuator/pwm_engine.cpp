@@ -1,6 +1,5 @@
 #include "pwm_engine.hpp"
-
-extern TIM_HandleTypeDef htim1;
+#include "Macros.hpp"
 
 HAL_StatusTypeDef PWMEngine::start()
 {
